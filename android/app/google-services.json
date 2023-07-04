@@ -1,0 +1,243 @@
+{
+  "project_info": {
+    "project_number": "314212303311",
+    "firebase_url": "https://masth-life-app-default-rtdb.firebaseio.com",
+    "project_id": "masth-life-app",
+    "storage_bucket": "masth-life-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:314212303311:android:1d95c713b5fa633b4d52ba",
+        "android_client_info": {
+          "package_name": "com.example.flutter_complete_guide"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "314212303311-r2c0n38vifcsdkde35n3tvtai52od2eh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flutter_complete_guide",
+            "certificate_hash": "d7f6b97ea24251ed987aba860642d540377196e6"
+          }
+        },
+        {
+          "client_id": "314212303311-25nb0aodg66k2r517tnhhsl5hapf1qh2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxi8QihF5p7y5c09uX3C2QCU26WFtDgwg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "314212303311-25nb0aodg66k2r517tnhhsl5hapf1qh2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "314212303311-73f4mg748v00jseqhv5lsla0lqfqgs0k.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.masth"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:314212303311:android:4f652f3940e4a4194d52ba",
+        "android_client_info": {
+          "package_name": "com.example.masth"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "314212303311-1ra3u3k0v07140n8ikgkp3qd15r48ba1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.masth",
+            "certificate_hash": "652f4609b2a28b5fe966dde3fc9f230135a7ebcb"
+          }
+        },
+        {
+          "client_id": "314212303311-cdip1piotd6eu0vdv8r2m7p6vdvbk0kp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.masth",
+            "certificate_hash": "744ccc2835d588ea205c8895d8037fabdfb9a516"
+          }
+        },
+        {
+          "client_id": "314212303311-d3u5j9s18gef3oo2g7tl2upuds64lqfs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.masth",
+            "certificate_hash": "d7f6b97ea24251ed987aba860642d540377196e6"
+          }
+        },
+        {
+          "client_id": "314212303311-f9ni7ilb0tpjleilmnv530uhar5okqen.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.masth",
+            "certificate_hash": "7bb8bb8c7b1fa706bcfd0f4566753b04d8c674de"
+          }
+        },
+        {
+          "client_id": "314212303311-knrm8ehhgap7anrktgdafmq8tjf4mhs7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.masth",
+            "certificate_hash": "8b150a94d688351f6e518e95412a793a9878d009"
+          }
+        },
+        {
+          "client_id": "314212303311-25nb0aodg66k2r517tnhhsl5hapf1qh2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxi8QihF5p7y5c09uX3C2QCU26WFtDgwg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "314212303311-25nb0aodg66k2r517tnhhsl5hapf1qh2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "314212303311-73f4mg748v00jseqhv5lsla0lqfqgs0k.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.masth"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:314212303311:android:c2b3285cda0b5f164d52ba",
+        "android_client_info": {
+          "package_name": "com.masth.masthGuru"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "314212303311-25nb0aodg66k2r517tnhhsl5hapf1qh2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxi8QihF5p7y5c09uX3C2QCU26WFtDgwg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "314212303311-25nb0aodg66k2r517tnhhsl5hapf1qh2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "314212303311-73f4mg748v00jseqhv5lsla0lqfqgs0k.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.masth"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:314212303311:android:c0fa032beaaef2564d52ba",
+        "android_client_info": {
+          "package_name": "com.masthlife.masth"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "314212303311-21a2d9l04js884lon56fuvi60ua4vo2o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.masthlife.masth",
+            "certificate_hash": "9fa5ffe1e8571141563a23e7fd978e27b0cd7f2e"
+          }
+        },
+        {
+          "client_id": "314212303311-7eb4ejoui7ieggujg56h7b7juaa0lj0v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.masthlife.masth",
+            "certificate_hash": "d7f6b97ea24251ed987aba860642d540377196e6"
+          }
+        },
+        {
+          "client_id": "314212303311-bbdii0qo4hr9n4lik3kf68r9tqk9pete.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.masthlife.masth",
+            "certificate_hash": "3a05c971f200e59bf29b670e5fcb964a5a2afea5"
+          }
+        },
+        {
+          "client_id": "314212303311-tgvi6loa07t20516vih5i3ppnnlnvas9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.masthlife.masth",
+            "certificate_hash": "652f4609b2a28b5fe966dde3fc9f230135a7ebcb"
+          }
+        },
+        {
+          "client_id": "314212303311-uda095eminchlh99vl2h1hkdj2rscgp1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.masthlife.masth",
+            "certificate_hash": "7bb8bb8c7b1fa706bcfd0f4566753b04d8c674de"
+          }
+        },
+        {
+          "client_id": "314212303311-25nb0aodg66k2r517tnhhsl5hapf1qh2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxi8QihF5p7y5c09uX3C2QCU26WFtDgwg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "314212303311-25nb0aodg66k2r517tnhhsl5hapf1qh2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "314212303311-73f4mg748v00jseqhv5lsla0lqfqgs0k.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.masth"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
