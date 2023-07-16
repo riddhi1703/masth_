@@ -47,3 +47,4 @@ class StudentBehaviour {
         date: json['date'],
       );
 }
+
