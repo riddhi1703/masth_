@@ -1,3 +1,5 @@
+
+
 import 'package:Masth_GURU/Ind_Student_info.dart';
 import 'package:Masth_GURU/student_model.dart';
 import 'package:Masth_GURU/widget/scrollable_widget.dart';
@@ -15,18 +17,18 @@ class StudentInfo extends StatefulWidget {
 
 class _StudentInfoState extends State<StudentInfo> {
 
-   late List<StudentData> students;
-   List<StudentData> sortedStudents = [];
+  late List<StudentData> students;
+  List<StudentData> sortedStudents = [];
   int? sortColumnIndex;
-   bool IsAscending = false;
+  bool IsAscending = false;
 
 
 
   @override
   void initState() {
     super.initState();
-     sortColumnIndex = null;
-     IsAscending =false;
+    sortColumnIndex = null;
+    IsAscending =false;
   }
 
   final user = FirebaseAuth.instance.currentUser;
@@ -55,7 +57,7 @@ class _StudentInfoState extends State<StudentInfo> {
               child: Text('Something went Worng!\n${snapshot.error}'),
             );
           } else if (snapshot.hasData) {
-             students = snapshot.data!;
+            students = snapshot.data!;
             // return ListView(
             //   children: students.map(buildStudent).toList(),
             // );
@@ -125,19 +127,18 @@ class _StudentInfoState extends State<StudentInfo> {
           // rows: getRows(students),
           rows: getRows(sortColumnIndex != null ? sortedStudents : students),
           border: TableBorder.all(),
-    ));
+        ));
   }
 
   List<DataColumn> getColumns(List<String> columns) =>
       columns.map((String column) => DataColumn(
-          label: Text(column),
-           onSort : onSortColumn,
+        label: Text(column),
+        onSort : onSortColumn,
       ))
           .toList();
 
   List<DataRow> getRows(List<StudentData> students) {
     students.removeWhere((element) => element.uid != user!.uid);
-
 
     var x = students.map((StudentData student) {
       final cells = [
@@ -149,14 +150,18 @@ class _StudentInfoState extends State<StudentInfo> {
       ];
 
       return DataRow(
-          cells: getCells(cells),
-          onLongPress: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => IndStudentInfo(studentData: student)));
-          });
+        cells: getCells(cells),
+        onLongPress: () {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => IndStudentInfo(studentData: student),
+          ));
+        },
+      );
     }).toList();
+
     return x;
   }
+
 
   List<DataCell> getCells(List<dynamic> cells) =>
       cells.map((data) => DataCell(Text(data.toString()))).toList();
@@ -176,8 +181,8 @@ class _StudentInfoState extends State<StudentInfo> {
         .collection("StudentData")
         .snapshots()
         .map((snapshot) => snapshot.docs
-            .map((doc) => StudentData.fromJson(doc.data()))
-            .toList());
+        .map((doc) => StudentData.fromJson(doc.data()))
+        .toList());
     return x;
   }
 
@@ -252,4 +257,3 @@ class _StudentInfoState extends State<StudentInfo> {
   }
 
 }
-

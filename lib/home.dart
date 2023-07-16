@@ -1,5 +1,5 @@
-// import 'dart:ffi';
-// import 'dart:html';
+
+
 import 'package:Masth_GURU/Send_Mail.dart';
 import 'package:Masth_GURU/student_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -32,9 +32,7 @@ class MyApp extends StatelessWidget {
       // ignore: unnecessary_new
       theme: new ThemeData(
           scaffoldBackgroundColor: Color.fromRGBO(249, 239, 238, 1)),
-      home: const Scaffold(
-        // appBar: AppBar(title: const Text(_title)),
-        body: Homepage(),
+      home: const Scaffold(        body: Homepage(),
       ),
     );
   }
@@ -62,8 +60,6 @@ class _HomepageState extends State<Homepage> {
   String formattedDate = "";
   final user = FirebaseAuth.instance.currentUser;
   final databaseStudent = FirebaseFirestore.instance;
-  // Create a CollectionReference called studentBehaviour that references the firestore collection
-
   String behaviourState = "OK";
 
   String time = '?';
@@ -85,17 +81,32 @@ class _HomepageState extends State<Homepage> {
 
   bool _isVisible = true;
 
-// get class => null;
+  String teacherName = "";
+  String teacherId = "";
 
-// get extends => null;
 
   String? classValue = "I";
   @override
   void initState() {
     super.initState();
     formattedDate = _myDateTime.toString().split(' ')[0];
+    FirebaseFirestore.instance
+        .collection('Teachers')
+        .doc("${user!.uid}")
+        .get()
+        .then((docSnap) {
+      if (docSnap.exists) {
+        setState(() {
+          teacherName = docSnap['name'];
+          teacherId = docSnap['teacherId'];
+        });
+      } else {
+        print('Teacher does not exist');
+      }
+    }).catchError((error) {
+      print('Error while fetching teacher details: $error');
+    });
   }
-
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -129,16 +140,9 @@ class _HomepageState extends State<Homepage> {
                       alignment: Alignment.centerRight,
                       child: Container(
                         child: IconButton(
-                          //onPressed: () {
-                          //  Navigator.push(context, MaterialPageRoute(builder: (_) => Sos()));
-                          //  },
+
                           onPressed: () {
-                            // Navigator.of(context, rootNavigator: true)
-                            //     .push<void>(PageRoute(
-                            //   //title: SettingsTab.title,
-                            //   fullscreenDialog: true,
-                            //   builder: (context) => const Sos(),
-                            // ));
+
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -162,17 +166,7 @@ class _HomepageState extends State<Homepage> {
                   ],
                 ),
               ),
-              // Container(
-              //     alignment: Alignment.centerRight,
-              //     padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-              //     child: const Text(
-              //       'SOS',
-              //       style: TextStyle(
-              //           color: Color.fromRGBO(164, 112, 90, 1),
-              //           fontFamily: 'Century Gothic',
-              //           fontWeight: FontWeight.w500,
-              //           fontSize: 18),
-              //     )),
+
               Row(children: [
                 Container(
                   alignment: Alignment.centerLeft,
@@ -202,18 +196,7 @@ class _HomepageState extends State<Homepage> {
                         fontWeight: FontWeight.w500,
                         fontSize: 22),
                   )),
-              // Row(
-              //   children: [
-              //     Container(
-              //         alignment: Alignment.centerLeft,
-              //         padding: const EdgeInsets.fromLTRB(10, 30, 10, 10),
-              //         child: const Text(
-              //           'Name of the student',
-              //           style: TextStyle(
-              //               color: Color.fromARGB(255, 160, 123, 74),
-              //               fontWeight: FontWeight.w500,
-              //               fontSize: 22),
-              //         )),
+
               Container(
                 padding: const EdgeInsets.fromLTRB(20, 10, 10, 0),
                 child: TextField(
@@ -233,17 +216,17 @@ class _HomepageState extends State<Homepage> {
                         .doc(schoolUid)
                         .collection("StudentData")
                         .where("admissionNo",
-                            isEqualTo: AdmissionController.text)
+                        isEqualTo: AdmissionController.text)
                         .limit(1)
                         .get();
                     if (ans.docs.length == 1) {
                       setState(() {
                         firstnameController.text =
-                            ans.docs.first.data()["firstname"];
+                        ans.docs.first.data()["firstname"];
                         lastnameController.text =
-                            ans.docs.first.data()["lastname"];
+                        ans.docs.first.data()["lastname"];
                         SectionController.text =
-                            ans.docs.first.data()["section"];
+                        ans.docs.first.data()["section"];
                         RollnoController.text = ans.docs.first.data()["rollNo"];
                         classValue = ans.docs.first.data()["Class"];
                       });
@@ -313,7 +296,7 @@ class _HomepageState extends State<Homepage> {
                   children: [
                     Container(
                       width: MediaQuery.of(context).size.width / 5,
-                      // color: Colors.black,
+
                       child: Center(
                         child: Container(
                           padding: EdgeInsets.only(left: 8),
@@ -360,7 +343,7 @@ class _HomepageState extends State<Homepage> {
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width / 5,
-                      // padding: const EdgeInsets.fromLTRB(20, 10, 10, 0),
+
                       child: TextField(
                         style: TextStyle(
                           fontFamily: 'Century Gothic',
@@ -381,62 +364,10 @@ class _HomepageState extends State<Homepage> {
                 ),
               ),
 
-              // Row(
-              //   crossAxisAlignment: CrossAxisAlignment.center,
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              //     Container(
-              //       // color: Colors.black,
-              //       padding: const EdgeInsets.fromLTRB(20, 10, 10, 0),
-              //       child: Center(
-              //         child: Container(
-              //           padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-              //           decoration: BoxDecoration(
-              //               color: Color.fromRGBO(147, 100, 81, 0.576),
-              //               borderRadius: BorderRadius.circular(5),
-              //               border: Border.all(
-              //                 color: Colors.brown,
-              //               )),
-              //           child: DropdownButtonHideUnderline(
-              //             child: DropdownButton<String>(
-              //               value: value,
-              //               iconSize: 36,
-              //               icon:
-              //                   Icon(Icons.arrow_drop_down, color: Colors.black),
-              //               isExpanded: true,
-              //               items: items.map(buildMenuItem).toList(),
-              //               onChanged: (value) =>
-              //                   setState(() => this.value = value),
-              //             ),
-              //           ),
-              //         ),
-              //       ),
-              //     ),
-              //     Container(
-              //       padding: const EdgeInsets.fromLTRB(20, 10, 10, 0),
-              //       child: TextField(
-              //         style: TextStyle(
-              //           fontFamily: 'Century Gothic',
-              //         ),
-              //         obscureText: false,
-              //         controller: RollnoController,
-              //         decoration: const InputDecoration(
-              //             fillColor: Color.fromRGBO(147, 100, 81, 0.576),
-              //             filled: true,
-              //             border: OutlineInputBorder(),
-              //             labelText: 'Section',
-              //             labelStyle: TextStyle(
-              //               fontFamily: 'Century Gothic',
-              //             )),
-              //       ),
-              //     ),
-              //   ],
-              // ),
+
 
               Container(
-                // onPressed: () {
-                //   //forgot password screen
-                // },
+
                 alignment: Alignment.centerLeft,
                 padding: const EdgeInsets.all(20),
                 child: const Text(
@@ -471,115 +402,103 @@ class _HomepageState extends State<Homepage> {
               ),
               _isVisible
                   ? Container(
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.fromLTRB(10, 30, 10, 30),
-                      child: const Text(
-                        'How was the student behaving today?',
-                        style: TextStyle(
-                            color: Color.fromRGBO(164, 112, 90, 1),
-                            fontFamily: 'Century Gothic',
-                            fontWeight: FontWeight.w500,
-                            fontSize: 18),
-                      ))
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.fromLTRB(10, 30, 10, 30),
+                  child: const Text(
+                    'How was the student behaving today?',
+                    style: TextStyle(
+                        color: Color.fromRGBO(164, 112, 90, 1),
+                        fontFamily: 'Century Gothic',
+                        fontWeight: FontWeight.w500,
+                        fontSize: 18),
+                  ))
                   : Container(),
               _isVisible
                   ? Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        IconButton(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                          icon: Image.asset('assets/images/emoji1.png'),
-                          iconSize: 50,
-                          onPressed: () {
-                            setState(() {
-                              _isVisible = !_isVisible;
-                            });
-                            behaviourState = "Terrible";
-                          },
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        IconButton(
-                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                            icon: Image.asset('assets/images/emoji2.png'),
-                            iconSize: 50,
-                            onPressed: () {
-                              setState(() {
-                                _isVisible = !_isVisible;
-                              });
-                              behaviourState = "Bad";
-                            }),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        IconButton(
-                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                            icon: Image.asset('assets/images/emoji3.png'),
-                            iconSize: 50,
-                            onPressed: () {
-                              setState(() {
-                                _isVisible = !_isVisible;
-                              });
-                              behaviourState = "OK";
-                            }),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        IconButton(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                          icon: Image.asset('assets/images/emoji4.png'),
-                          iconSize: 50,
-                          onPressed: () {
-                            setState(() {
-                              _isVisible = !_isVisible;
-                            });
-                            behaviourState = "Good";
-                          },
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        IconButton(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                          icon: Image.asset('assets/images/emoji5.png'),
-                          iconSize: 50,
-                          onPressed: () {
-                            setState(() {
-                              _isVisible = !_isVisible;
-                            });
-                            behaviourState = "Awesome";
-                          },
-                        ),
-                      ],
-                    )
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                    icon: Image.asset('assets/images/emoji1.png'),
+                    iconSize: 50,
+                    onPressed: () {
+                      setState(() {
+                        _isVisible = !_isVisible;
+                      });
+                      behaviourState = "Terrible";
+                    },
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  IconButton(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                      icon: Image.asset('assets/images/emoji2.png'),
+                      iconSize: 50,
+                      onPressed: () {
+                        setState(() {
+                          _isVisible = !_isVisible;
+                        });
+                        behaviourState = "Bad";
+                      }),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  IconButton(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                      icon: Image.asset('assets/images/emoji3.png'),
+                      iconSize: 50,
+                      onPressed: () {
+                        setState(() {
+                          _isVisible = !_isVisible;
+                        });
+                        behaviourState = "OK";
+                      }),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  IconButton(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                    icon: Image.asset('assets/images/emoji4.png'),
+                    iconSize: 50,
+                    onPressed: () {
+                      setState(() {
+                        _isVisible = !_isVisible;
+                      });
+                      behaviourState = "Good";
+                    },
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  IconButton(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                    icon: Image.asset('assets/images/emoji5.png'),
+                    iconSize: 50,
+                    onPressed: () {
+                      setState(() {
+                        _isVisible = !_isVisible;
+                      });
+                      behaviourState = "Awesome";
+                    },
+                  ),
+                ],
+              )
                   : Container(),
               _isVisible == false
                   ? Container(
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.fromLTRB(10, 30, 10, 30),
-                      child: const Text(
-                        'Thank you for your Response!',
-                        style: TextStyle(
-                            color: Color.fromRGBO(164, 112, 90, 1),
-                            fontFamily: 'Century Gothic',
-                            fontWeight: FontWeight.w500,
-                            fontSize: 18),
-                      ))
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.fromLTRB(10, 30, 10, 30),
+                  child: const Text(
+                    'Thank you for your Response!',
+                    style: TextStyle(
+                        color: Color.fromRGBO(164, 112, 90, 1),
+                        fontFamily: 'Century Gothic',
+                        fontWeight: FontWeight.w500,
+                        fontSize: 18),
+                  ))
                   : Container(),
-              // Padding(
-              //   padding: const EdgeInsets.fromLTRB(0, 20, 0, 50),
-              //   child: EmojiFeedback(
-              //     onChange: (index) {
-              //       print(index);
-              //     },
-              //   ),
-              // ),
-              // Container(
-              //   alignment: Alignment.center,
-              //   padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
-              //   child: Image.asset('assets/images/all_icons.png', scale: 10),
-              // ),
+
               Container(
                   alignment: Alignment.centerRight,
                   padding: const EdgeInsets.fromLTRB(1, 20, 0, 10),
@@ -589,12 +508,8 @@ class _HomepageState extends State<Homepage> {
                         fontFamily: 'Century Gothic',
                         color: Color.fromRGBO(121, 85, 72, 1)),
                   )
-                  // style: TextStyle(
-                  //     color: Color.fromRGBO(164, 112, 90, 1),
-                  //     fontFamily: 'Century Gothic',
-                  //     fontWeight: FontWeight.w500,
-                  //     fontSize: 18),
-                  ),
+
+              ),
               Row(children: [
                 Container(
                     alignment: Alignment.centerLeft,
@@ -627,18 +542,7 @@ class _HomepageState extends State<Homepage> {
                         formattedDate = _myDateTime.toString().split(' ')[0];
                       });
                     },
-                    // onPressed: () async {
-                    //   _myDateTime = (await showDatePicker(
-                    //       context: context,
-                    //       initialDate: _myDateTime = _myDateTime,
-                    //       firstDate: DateTime(1990),
-                    //       lastDate: DateTime(2800)))!;
-                    //   setState(() {
-                    //     final now = DateTime.now();
-                    //     time = //DateFormat('dd-MM-yy').format(_myDateTime);
-                    //         _myDateTime.toString();
-                    //   });
-                    // },
+
                   ),
                 ),
               ]),
@@ -659,84 +563,123 @@ class _HomepageState extends State<Homepage> {
                             .get();
                         schoolUid = school.data()!["schooluid"];
                       }
-                      var studentBehaviour = FirebaseFirestore.instance
+                      // var studentDocument = await databaseStudent
+                      //     .collection('StudentData')
+                      //     .doc(schoolUid)
+                      //     .collection("StudentData")
+                      //     .where(
+                      //     "admissionNo", isEqualTo: AdmissionController.text)
+                      // //.limit(1)
+                      //     .get();
+
+                      var teacherDocument = await databaseStudent
+                          .collection('Teachers')
+                          .doc(user!.uid)
+                          .get();
+
+                      if (!teacherDocument.exists) {
+                        // Create new document with teacher ID
+                        await databaseStudent
+                            .collection('Teachers')
+                            .doc(user!.uid)
+                            .set({
+                          'teacherId': user!.uid,
+                        });
+                      }
+
+                      var teacherId = teacherDocument.data()?['teacherId'];
+                      var studentDocument = await databaseStudent
                           .collection('StudentData')
                           .doc(schoolUid)
                           .collection("StudentData")
-                          .doc(
-                              '${AdmissionController.text}_${firstnameController.text}_${lastnameController.text}');
-                      //Setting Student Data
-                      studentBehaviour.set({
-                        'firstname': firstnameController.text,
-                        "lastname": lastnameController.text,
-                        'rollNo': RollnoController.text,
-                        'Class': classValue ?? 'not specified',
-                        'section': SectionController.text,
-                        'admissionNo': AdmissionController.text,
-                        "adduid": user!.uid,
-                        "schoolUid": schoolUid
-                      }, SetOptions(merge: true));
-                      //Setting Student Behaviour
+                          .where("admissionNo", isEqualTo: AdmissionController.text)
+                          .where("teacherId", isEqualTo: teacherId)
+                          .get();
 
-                      var ans = await studentBehaviour.get();
-                      var ne = ans.data() as Map<String, dynamic>;
-                      if (ne["StudentBehaviour"] == null) {
-                        ne["StudentBehaviour"] = [];
+                      if (studentDocument.docs.isNotEmpty) {
+                        var studentBehaviorData = studentDocument.docs.first;
+                        var studentBehaviorRef = studentBehaviorData.reference;
+
+                        var studentBehaviourList =
+                        studentBehaviorData.data()?["StudentBehaviour"] as List<
+                            dynamic>?;
+                        List<Map<String, dynamic>> updatedBehaviors = [];
+
+                        if (studentBehaviourList != null) {
+                          updatedBehaviors.addAll(studentBehaviourList.cast<
+                              Map<String, dynamic>>());
+                        }
+
+                        updatedBehaviors.add({
+                          'behaviour': TextController.text,
+                          'behaviourState': behaviourState,
+                          'date': formattedDate,
+                          'teacherName': teacherName,
+                          'teacherId': teacherId,
+                        });
+
+                        await studentBehaviorRef.update(
+                            {"StudentBehaviour": updatedBehaviors});
+
+                        setState(() {
+                          _isVisible = true;
+                          firstnameController.clear();
+                          lastnameController.clear();
+                          RollnoController.clear();
+                          SectionController.clear();
+                          AdmissionController.clear();
+                          TextController.clear();
+                          _myDateTime = DateTime.now();
+                          formattedDate = _myDateTime.toString().split(' ')[0];
+                        });
+                      } else {
+                        var studentBehaviour = FirebaseFirestore.instance
+                            .collection('StudentData')
+                            .doc(schoolUid)
+                            .collection("StudentData")
+                            .doc(); //Setting Student Data
+                        studentBehaviour.set({
+                          'firstname': firstnameController.text,
+                          "lastname": lastnameController.text,
+                          'rollNo': RollnoController.text,
+                          'Class': classValue ?? 'not specified',
+                          'section': SectionController.text,
+                          'admissionNo': AdmissionController.text,
+                          "adduid": user!.uid,
+                          "schoolUid": schoolUid,
+                          "teacherName": teacherName,
+                          "teacherId": teacherId,
+                        }, SetOptions(merge: true));
+                        //Setting Student Behaviour
+
+                        var ans = await studentBehaviour.get();
+                        var ne = ans.data() as Map<String, dynamic>;
+                        if (ne["StudentBehaviour"] == null) {
+                          ne["StudentBehaviour"] = [];
+                        }
+                        ne["StudentBehaviour"].add({
+                          'behaviour': TextController.text,
+                          'behaviourState': behaviourState,
+                          'date': formattedDate,
+                          'teacherName': teacherName,
+                          'teacherId': teacherId,
+                        });
+                        studentBehaviour.set(ne);
+                        setState(() {
+                          _isVisible = true;
+                          firstnameController.clear();
+                          lastnameController.clear();
+                          RollnoController.clear();
+                          SectionController.clear();
+                          AdmissionController.clear();
+                          TextController.clear();
+                          _myDateTime = DateTime.now();
+                          formattedDate = _myDateTime.toString().split(' ')[0];
+                        });
                       }
-                      ne["StudentBehaviour"].add({
-                        'behaviour': TextController.text,
-                        'behaviourState': behaviourState,
-                        'date': formattedDate,
-                      });
-                      studentBehaviour.set(ne);
-                      // studentBehaviour.update({
-                      //   "StudentBehaviour": [
-                      // {
-                      //   'behaviour': TextController.text,
-                      //   'behaviourState': behaviourState,
-                      //   'date': formattedDate,
-                      // }
-                      //   ]
-                      // });
-                      // studentBehaviour
-                      //     .set({
-                      //       "StudentBehaviour": [
-                      //         {
-                      //           'behaviour': TextController.text,
-                      //           'behaviourState': behaviourState,
-                      //           'date': formattedDate,
-                      //         }
-                      //       ]
-                      //     }, SetOptions(merge: true))
-                      //     .then((value) => print("Student Behaviour Recorded"))
-                      //     .catchError((error) => print(
-                      //         "Failed to record student behaviour: $error"));
-                      setState(() {
-                        _isVisible = true;
-                        firstnameController.clear();
-                        lastnameController.clear();
-                        RollnoController.clear();
-                        SectionController.clear();
-                        AdmissionController.clear();
-                        TextController.clear();
-                        _myDateTime = DateTime.now();
-                        formattedDate = _myDateTime.toString().split(' ')[0];
-                      });
-                    },
-                  )),
-              // Container(
-              //     height: 60,
-              //     padding: const EdgeInsets.fromLTRB(10, 20, 10, 0),
-              //     child: ElevatedButton(
-              //       style: ElevatedButton.styleFrom(
-              //         primary: Color.fromRGBO(121, 85, 72, 1),
-              //         textStyle: TextStyle(fontFamily: 'Century Gothic'),
-              //       ),
-              //       child: const Text('REFER STUDENT TO THERAPIST'),
-              //       onPressed: () {
-              //         print(nameController.text);
-              //       },
-              //     )),
+                    }
+                    )),
+
             ],
           )),
     );
@@ -744,10 +687,10 @@ class _HomepageState extends State<Homepage> {
 
   DateFormat(String s) {}
   DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(
-        value: item,
-        child: Text(
-          item,
-          style: TextStyle(fontSize: 15),
-        ),
-      );
+    value: item,
+    child: Text(
+      item,
+      style: TextStyle(fontSize: 15),
+    ),
+  );
 }

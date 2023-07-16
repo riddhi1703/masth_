@@ -17,6 +17,7 @@ class StudentData {
     required this.admissionNo,
     required this.uid,
     required this.schoolUid,
+
   });
 
   static StudentData fromJson(Map<String, dynamic> json) => StudentData(
@@ -34,17 +35,24 @@ class StudentBehaviour {
   final String behaviour;
   final String behaviourState;
   final String date;
+  final String teacherName;
+  final String teacherId;
+
 
   StudentBehaviour({
     required this.behaviour,
     required this.behaviourState,
     required this.date,
+    required this.teacherName,
+    required this.teacherId,
+
   });
   static StudentBehaviour fromJson(Map<String, dynamic> json) =>
       StudentBehaviour(
-        behaviour: json['behaviour'],
-        behaviourState: json['behaviourState'],
-        date: json['date'],
+          behaviour: json['behaviour'],
+          behaviourState: json['behaviourState'],
+          date: json['date'],
+          teacherName: json['teacherName'],
+          teacherId: json['teacherId']
       );
 }
-
