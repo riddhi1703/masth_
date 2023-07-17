@@ -1,40 +1,41 @@
+
 import 'dart:io';
 
 import 'package:Masth_GURU/student_model.dart';
 import 'package:Masth_GURU/therapist.dart';
+import 'package:Masth_GURU/widget/scrollable_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class ViewData extends StatefulWidget {
-  StudentDetails myClass;
+  final StudentDetails myClass;
+
   ViewData(this.myClass, {Key? key}) : super(key: key);
 
   @override
-  State<ViewData> createState() => _ViewDataState(myClass);
+  _ViewDataState createState() => _ViewDataState();
 }
 
 class _ViewDataState extends State<ViewData> {
-  StudentDetails myClass;
   CollectionReference? dataBase;
   CollectionReference? oldDatabase;
 
-  _ViewDataState(this.myClass);
-
-  setValues() async {
-    dataBase = FirebaseFirestore.instance
-        .collection("StudentData")
-        .doc(myClass.schoolUid)
-        .collection('referredStudentscurr');
-    oldDatabase = FirebaseFirestore.instance
-        .collection("StudentData")
-        .doc(myClass.schoolUid)
-        .collection('referredStudentsold');
-  }
-
+  @override
   void initState() {
     super.initState();
     setValues();
+  }
+
+  void setValues() async {
+    dataBase = FirebaseFirestore.instance
+        .collection("StudentData")
+        .doc(widget.myClass.schoolUid)
+        .collection('referredStudentscurr');
+    oldDatabase = FirebaseFirestore.instance
+        .collection("StudentData")
+        .doc(widget.myClass.schoolUid)
+        .collection('referredStudentsold');
   }
 
   @override
@@ -44,7 +45,7 @@ class _ViewDataState extends State<ViewData> {
       appBar: AppBar(
         backgroundColor: Color.fromARGB(250, 164, 112, 90),
         title: Text(
-          "${myClass.firstname} ${myClass.cls} ${myClass.sec}",
+          "${widget.myClass.firstname} ${widget.myClass.cls} ${widget.myClass.sec}",
           overflow: TextOverflow.clip,
         ),
       ),
@@ -64,21 +65,29 @@ class _ViewDataState extends State<ViewData> {
                 ),
               ),
               Text(
-                  "First Name :- ${myClass.firstname}\nLast Name :- ${myClass.lastname}\n"),
+                "First Name: ${widget.myClass.firstname}\nLast Name: ${widget.myClass.lastname}\n",
+              ),
               SizedBox(height: 5),
-              Text("Class and Section :- ${myClass.cls} ${myClass.sec}"),
+              Text(
+                "Class and Section: ${widget.myClass.cls} ${widget.myClass.sec}",
+              ),
               SizedBox(height: 5),
-              Text("Admission Number :- ${myClass.admNo}"),
+              Text(
+                "Admission Number: ${widget.myClass.admNo}",
+              ),
               SizedBox(height: 5),
               Center(
-                  child: ElevatedButton(
-                      onPressed: () async {
-                        var data = await dataBase!.doc(myClass.deleteID).get();
-                        oldDatabase!.add(data.data());
-                        await dataBase!.doc(myClass.deleteID).delete();
-                        Navigator.pop(context);
-                      },
-                      child: Text("Resolved"))),
+                child: ElevatedButton(
+                  onPressed: () async {
+                    var data =
+                    await dataBase!.doc(widget.myClass.deleteID).get();
+                    oldDatabase!.add(data.data()!);
+                    await dataBase!.doc(widget.myClass.deleteID).delete();
+                    Navigator.pop(context);
+                  },
+                  child: Text("Resolved"),
+                ),
+              ),
               SizedBox(
                 height: 10,
               ),
@@ -87,7 +96,7 @@ class _ViewDataState extends State<ViewData> {
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
                     return Center(
-                      child: Text('Something went Worng!\n${snapshot.error}'),
+                      child: Text('Something went wrong!\n${snapshot.error}'),
                     );
                   } else if (snapshot.hasData) {
                     final studentBehaviours = snapshot.data!;
@@ -100,47 +109,6 @@ class _ViewDataState extends State<ViewData> {
                   }
                 },
               ),
-              // Expanded(
-              //   child: ListView.builder(
-              //       itemCount: 3,
-              //       itemBuilder: ((context, index) {
-              //         return Container(
-              //           padding: EdgeInsets.symmetric(vertical: 10),
-              //           foregroundDecoration: BoxDecoration(
-              //             border: Border.all(
-              //               width: 2,
-              //             ),
-              //           ),
-              //           child: Row(
-              //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              //             children: [
-              //               Text("${index + 1}"),
-              //               VerticalDivider(
-              //                 indent: 1,
-              //                 endIndent: 20,
-              //                 width: 20,
-              //                 thickness: 4,
-              //                 color: Colors.amber,
-              //               ),
-              //               Container(
-              //                 child: Wrap(
-              //                   children: [Text("\n")],
-              //                 ),
-              //               ),
-              //               VerticalDivider(
-              //                 width: 5,
-              //                 thickness: 4,
-              //               ),
-              //               Container(
-              //                 child: Wrap(
-              //                   children: [Text("Emoji")],
-              //                 ),
-              //               ),
-              //             ],
-              //           ),
-              //         );
-              //       })),
-              // )
             ],
           ),
         ),
@@ -149,13 +117,21 @@ class _ViewDataState extends State<ViewData> {
   }
 
   Widget buildDataTable(List<StudentBehaviour> studentBehaviours) {
-    final columns = ['Date', 'Observed Behaviour', 'Emoji'];
-    return DataTable(
-      columns: getColumns(columns),
-      rows: getRows(studentBehaviours),
-      border: TableBorder.all(),
-      columnSpacing: 10,
-      horizontalMargin: 10,
+    final columns = [
+      'Date',
+      'Observed Behaviour',
+      'Emoji',
+      'Teacher Name',
+      'Teacher Id'
+    ];
+    return ScrollableWidget(
+      child: DataTable(
+        columns: getColumns(columns),
+        rows: getRows(studentBehaviours),
+        border: TableBorder.all(),
+        columnSpacing: 10,
+        horizontalMargin: 10,
+      ),
     );
   }
 
@@ -168,46 +144,50 @@ class _ViewDataState extends State<ViewData> {
           studentBehaviour.date,
           studentBehaviour.behaviour,
           studentBehaviour.behaviourState,
+          studentBehaviour.teacherName,
+          studentBehaviour.teacherId,
         ];
 
-        return DataRow(
-          cells: getCells(cells),
-        );
+        return DataRow(cells: getCells(cells));
       }).toList();
 
   List<DataCell> getCells(List<dynamic> cells) =>
       cells.map((data) => DataCell(Text(data.toString()))).toList();
 
-  Widget buildStudentBehaviour(StudentBehaviour studentBehaviour) =>
-      GestureDetector(
-        onTap: () {
-          print(studentBehaviour.behaviourState);
-        },
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Text(studentBehaviour.date),
-            Text(studentBehaviour.behaviour),
-            Text(studentBehaviour.behaviourState),
-          ],
-        ),
-      );
-
   Future<List<StudentBehaviour>> readStudentBehaviour() async {
-    var x = await FirebaseFirestore.instance
+    var behaviourQuerySnapshot = await FirebaseFirestore.instance
         .collection('StudentData')
-        .doc("${myClass.schoolUid}")
-        .collection("StudentData")
-        .doc('${myClass.admNo}_${myClass.firstname}_${myClass.lastname}')
+        .doc(widget.myClass.schoolUid)
+        .collection('StudentData')
+        .where('admissionNo', isEqualTo: widget.myClass.admNo)
         .get();
-    var y = x["StudentBehaviour"] as List<dynamic>;
-    List<StudentBehaviour> behave = [];
-    y.forEach(
-      (element) {
-        behave.add(StudentBehaviour.fromJson(element));
-      },
-    );
-    print(x);
-    return behave;
+
+    List<StudentBehaviour> studentBehaviours = [];
+
+    for (var behaviourDocument in behaviourQuerySnapshot.docs) {
+      var behaviourData = behaviourDocument.data();
+      var behaviourList = behaviourData['StudentBehaviour'] as List<dynamic>?;
+      // var teacherName = behaviourData['teacherName'] as String?;
+      // var teacherId = behaviourData['teacherId'] as String?;
+
+      if (behaviourList != null) {
+        for (var behaviour in behaviourList) {
+          var studentBehaviour = StudentBehaviour(
+            date: behaviour['date'] as String? ?? '',
+            behaviour: behaviour['behaviour'] as String? ?? '',
+            behaviourState: behaviour['behaviourState'] as String? ?? '',
+            // teacherName: teacherName ?? '',
+            // teacherId: teacherId ?? '',
+            teacherName: behaviour['teacherName']  as String? ?? '',
+            teacherId: behaviour['teacherId'] as String? ?? '',
+          );
+
+          studentBehaviours.add(studentBehaviour);
+        }
+      }
+    }
+
+    return studentBehaviours;
   }
+
 }

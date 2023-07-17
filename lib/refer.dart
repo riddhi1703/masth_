@@ -1,3 +1,4 @@
+
 import 'package:Masth_GURU/teacher.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -41,6 +42,8 @@ class _Refer_PageState extends State<Refer_Page> {
           .doc("${user!.uid}")
           .get();
       var schoolUid = school.data()!["schooluid"];
+      var teacherId = school.data()!["teacherId"];
+      var teacherName =school.data()!["name"];
       var ans = await databaseStudent
           .collection("StudentData")
           .doc(schoolUid)
@@ -65,7 +68,9 @@ class _Refer_PageState extends State<Refer_Page> {
           "referredby": {
             "uid": user!.uid,
             "username": user!.displayName,
-            "email": user!.email ?? ""
+            "email": user!.email ?? "",
+            "referringteacherId": teacherId,
+            "referringteacherName": teacherName
           }
         });
       } else {

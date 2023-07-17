@@ -1,3 +1,5 @@
+
+
 import 'package:Masth_GURU/Ind_Student_info.dart';
 import 'package:Masth_GURU/student_model.dart';
 import 'package:Masth_GURU/widget/scrollable_widget.dart';
@@ -14,6 +16,21 @@ class StudentInfo extends StatefulWidget {
 }
 
 class _StudentInfoState extends State<StudentInfo> {
+
+  late List<StudentData> students;
+  List<StudentData> sortedStudents = [];
+  int? sortColumnIndex;
+  bool IsAscending = false;
+
+
+
+  @override
+  void initState() {
+    super.initState();
+    sortColumnIndex = null;
+    IsAscending =false;
+  }
+
   final user = FirebaseAuth.instance.currentUser;
   String schoolUid = "";
   _StudentInfoState(this.schoolUid);
@@ -40,7 +57,7 @@ class _StudentInfoState extends State<StudentInfo> {
               child: Text('Something went Worng!\n${snapshot.error}'),
             );
           } else if (snapshot.hasData) {
-            final students = snapshot.data!;
+            students = snapshot.data!;
             // return ListView(
             //   children: students.map(buildStudent).toList(),
             // );
@@ -75,19 +92,54 @@ class _StudentInfoState extends State<StudentInfo> {
 
   Widget buildDataTable(List<StudentData> students) {
     final columns = ['Adm No', 'First Name', 'Last Name', 'Class', 'Section'];
+
+    if (sortColumnIndex != null) {
+      sortedStudents = List.from(students);
+      sortedStudents.sort((student1, student2) {
+        switch (sortColumnIndex) {
+          case 0:
+            return compareString(
+                IsAscending, student1.admissionNo, student2.admissionNo);
+          case 1:
+            return compareString(
+                IsAscending, student1.firstname, student2.firstname);
+          case 2:
+            return compareString(
+                IsAscending, student1.lastname, student2.lastname);
+          case 3:
+            return compareString(IsAscending, student1.Class, student2.Class);
+          case 4:
+            return compareString(
+                IsAscending, student1.section, student2.section);
+          default:
+            return 0;
+        }
+      });
+    }
+
+
     return ScrollableWidget(
         child: DataTable(
-      columns: getColumns(columns),
-      rows: getRows(students),
-      border: TableBorder.all(),
-    ));
+
+          sortAscending: IsAscending,
+          sortColumnIndex: sortColumnIndex,
+          columns: getColumns(columns),
+          // rows: getRows(students),
+          rows: getRows(sortColumnIndex != null ? sortedStudents : students),
+          border: TableBorder.all(),
+        ));
   }
 
   List<DataColumn> getColumns(List<String> columns) =>
-      columns.map((String column) => DataColumn(label: Text(column))).toList();
+      columns.map((String column) => DataColumn(
+        label: Text(column),
+        onSort : onSortColumn,
+      ))
+          .toList();
 
   List<DataRow> getRows(List<StudentData> students) {
     students.removeWhere((element) => element.uid != user!.uid);
+
     var x = students.map((StudentData student) {
       final cells = [
         student.admissionNo,
@@ -98,14 +150,18 @@ class _StudentInfoState extends State<StudentInfo> {
       ];
 
       return DataRow(
-          cells: getCells(cells),
-          onLongPress: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => IndStudentInfo(studentData: student)));
-          });
+        cells: getCells(cells),
+        onLongPress: () {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => IndStudentInfo(studentData: student),
+          ));
+        },
+      );
     }).toList();
+
     return x;
   }
+
 
   List<DataCell> getCells(List<dynamic> cells) =>
       cells.map((data) => DataCell(Text(data.toString()))).toList();
@@ -125,8 +181,79 @@ class _StudentInfoState extends State<StudentInfo> {
         .collection("StudentData")
         .snapshots()
         .map((snapshot) => snapshot.docs
-            .map((doc) => StudentData.fromJson(doc.data()))
-            .toList());
+        .map((doc) => StudentData.fromJson(doc.data()))
+        .toList());
     return x;
   }
+
+
+  void onSortColumn(int columnIndex, bool ascending) {
+    if (students != null) {
+      setState(() {
+        if (sortColumnIndex == columnIndex) {
+          IsAscending = !IsAscending;
+        } else {
+          sortColumnIndex = columnIndex;
+          IsAscending = ascending;
+        }
+
+        students.sort((student1, student2) {
+          switch (columnIndex) {
+            case 0:
+              return compareString(
+                  IsAscending, student1.admissionNo, student2.admissionNo);
+            case 1:
+              return compareString(
+                  IsAscending, student1.firstname, student2.firstname);
+            case 2:
+              return compareString(
+                  IsAscending, student1.lastname, student2.lastname);
+            case 3:
+              return compareString(IsAscending, student1.Class, student2.Class);
+            case 4:
+              return compareString(
+                  IsAscending, student1.section, student2.section);
+            default:
+              return 0;
+          }
+        });
+      });
+    }
+  }
+
+
+
+
+
+  int compareString(bool ascending, String value1, String value2) {
+    final int1 = convertRomanToInteger(value1);
+    final int2 = convertRomanToInteger(value2);
+
+    if (int1 != null && int2 != null) {
+      return ascending ? int1.compareTo(int2) : int2.compareTo(int1);
+    }
+
+    return ascending ? value1.compareTo(value2) : value2.compareTo(value1);
+  }
+
+
+  int? convertRomanToInteger(String romanNumeral) {
+    final Map<String, int> romanToInteger = {
+      'I': 1,
+      'II': 2,
+      'III': 3,
+      'IV': 4,
+      'V': 5,
+      'VI': 6,
+      'VII': 7,
+      'VIII': 8,
+      'IX': 9,
+      'X': 10,
+      'XI': 11,
+      'XII': 12
+    };
+
+    return romanToInteger[romanNumeral];
+  }
+
 }
