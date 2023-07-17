@@ -27,8 +27,8 @@ class _LoginWithGoogleState extends State<LoginWithGoogle> {
   @override
   Widget build(BuildContext context) {
     return Material(
-        color: Color.fromARGB(255, 249, 239, 238),
-        child: SingleChildScrollView(
+        color: Color.fromARGB(255, 224, 205, 170),
+      child: SingleChildScrollView(
           child: Form(
             key: _formKey,
             child: Column(
